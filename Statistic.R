@@ -123,7 +123,15 @@ t.test(`mkM_Cu_per_DWCW` ~ `part`,Vicia_Copper_DESORBTION_SHOOT_VS_ROOT.t.test)
 
 Vicia_Copper_DESORBTION_SHOOT_VS_ROOT %>% 
   group_by(treatment.2) %>% 
-  summarise(mean(mkM_Cu_per_DWCW, na.rm = TRUE), mean(mkM_Cu_per_DW,mean(mkM_Cu_per_FW)) %>% 
+  summarise(mean(mkM_Cu_per_DWCW, na.rm = TRUE), mean(mkM_Cu_per_DW,mean(mkM_Cu_per_FW))) %>% 
   View()
 
-  
+Vicia_pH.root.t.test <- Vicia_pH.root %>% 
+  filter(Variant %in% c('Control', '100 mkM His 1 mM'))
+t.test(pH_after_sorbtion.root ~ Variant, Vicia_pH.root.t.test, paired = FALSE)
+
+Vicia_pH.shoot.t.test <- Vicia_pH.shoot %>% 
+  filter(Variant %in% c('Control', 'Gln 1 mM'))
+t.test(pH_after_sorbtion.shoot ~ Variant, Vicia_pH.shoot.t.test, paired = FALSE)
+
+
