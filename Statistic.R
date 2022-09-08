@@ -113,4 +113,17 @@ Vicia_Copper_DESORBTION_SHOOT_VS_ROOT<- Vicia_Copper_DESORBTION_SHOOT_VS_ROOT %>
   mutate(treatment_order = factor(Variant, levels = c('10 mkM', 'His 0.5 mM', 'His 1 mM', 'Gln 1 mM', 'Gln 5 mM',
                                                        '100 mkM', '100 mkM His 0.5 mM', '100 mkM His 1 mM', '100 mkM Gln 1 mM', '100 mkM Gln 5 mM',
                                                        '50 mkM', 'Tr 10 mkM', 'Tr His 1 mM', 'Tr Gln 5 mM')))
-  
+Vicia_Copper_DESORBTION_root %>% 
+  arrange(Variant) %>% 
+  filter(Variant %in% c('10 mkM', 'Gln 1 mM', 'Gln 5 mM')) %>% 
+  na.omit() %>% 
+  group_by(Variant) %>% 
+  summarise(mean(desorbtion_per_FW_root), sd(desorbtion_per_FW_root), std.error(desorbtion_per_FW_root),
+            mean(desorbtion_per_DW_root), sd(desorbtion_per_DW_root), std.error(desorbtion_per_DW_root),
+            mean(desorbtion_per_DWCW_root), sd(desorbtion_per_DWCW_root), std.error(desorbtion_per_DWCW_root)) %>% 
+  View()
+
+Vicia_Copper_DESORBTION_root.T.test <- Vicia_Copper_DESORBTION_root %>% 
+  filter(Variant %in% c('10 mkM', 'Gln 1 mM'))
+t.test(desorbtion_per_DWCW_root ~ Variant, Vicia_Copper_DESORBTION_root.T.test, var.equal = TRUE)
+
