@@ -130,3 +130,22 @@ t.test(desorbtion_per_DWCW_root ~ Variant, Vicia_Copper_DESORBTION_root.T.test, 
 Vicia_Cell_wall_mass.share %>% 
   arrange(Variant) %>% 
   write_csv2(, file = 'Массовая_доля_КС_08_09_2022.csv')
+
+Vicia_Copper_DESORBTION_root <- Vicia_Copper_DESORBTION_root %>% 
+  arrange(Variant) %>% 
+  select(1:4)
+
+Vicia_Copper_DESORBTION_shoot <- Vicia_Copper_DESORBTION_shoot %>% 
+  arrange(Variant) %>% 
+  select(1:4)
+colnames(Vicia_Copper_DESORBTION_root) <- c('Treatment', 'Copper_per_FW',
+                                             'Copper_per_DW','Copper_per_DWCW')
+Vicia_Copper_DESORBTION_shoot <- Vicia_Copper_DESORBTION_shoot %>% 
+  slice(-c(19:21, 43:45, 61:63, 73:75, 94:99))
+Vicia_CWROOT_VS_CWSHOOT <- bind_rows(Vicia_Copper_DESORBTION_root,
+                                     Vicia_Copper_DESORBTION_shoot)
+rm(Vicia_Copper_DESORBTION_shoot.1)
+
+Vicia_CWROOT_VS_CWSHOOT$Graf.patern[33:35] <- rep('100 mkM His 0.5 mM.root',3)
+Vicia_CWROOT_VS_CWSHOOT %>%   
+View()
