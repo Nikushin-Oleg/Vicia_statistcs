@@ -7,7 +7,7 @@ library(patchwork)
 library(RColorBrewer)
 library(Richtext)
 library(gridtext)
-install.packages('RColorBrewer')
+install.packages('Richtext')
 Vicia_mass <- Vicia_mass %>% 
   mutate(treatment = factor(Variant, levels = c('Control','10 mkM', 'His 0.5 mM', 'His 1 mM', 'Gln 1 mM', 
                        'Gln 5 mM', '100 mkM', '100 mkM His 0,5 mM', '100 mkM His 1 mM', '100 mkM Gln 1 mM', 
@@ -428,39 +428,103 @@ ggsave('Сравнение Десорбции с озолением.png', width 
 ggsave('Сравнение Десорбции с озолением.png', width = 12, height = 10)
 
 
+Vicia_CWROOT_VS_CWSHOOT <- Vicia_CWROOT_VS_CWSHOOT %>% 
+  mutate(organ.2 = c(rep('10 mkM.root', 18),
+                     rep('100 mkM.root', 8),
+                     rep('100 mkM Gln 1 mM.root', 3),
+                     rep('100 mkM Gln 5 mM.root', 3),
+                     rep('100 mkM His 0.5 mM.root', 3),
+                     rep('100 mkM His 1 mM.root', 3),
+                     rep('50 mkM.root',3),
+                     rep('Gln 1 mM.root', 12),
+                     rep('Gln 5 mM.root', 12),
+                     rep('His 0.5 mM.root', 6),
+                     rep('His 1 mM.root',6),
+                     rep('Pretrit Gln 1 mM.root', 3), 
+                     rep('Pretrit Gln 5 mM.root', 3),
+                     rep('Pretrit His 0.5 mM.root', 3),
+                     rep('Pretrit His 1 mM.root', 3),
+                     rep('Tr 10 mkM.root', 9),
+                     rep('Tr Gln 5 mM.root', 9),
+                     rep('Tr His 1 mM.root',9),
+                     rep('10 mkM.shoot', 18),
+                     rep('100 mkM.shoot', 9),
+                     rep('100 mkM Gln 1 mM.shoot', 3),
+                     rep('100 mkM Gln 5 mM.shoot', 3),
+                     rep('100 mkM His 0.5 mM.shoot', 3),
+                     rep('100 mkM His 1 mM.shoot', 3),
+                     rep('50 mkM.shoot',6),
+                     rep('Gln 1 mM.shoot', 9),
+                     rep('Gln 5 mM.shoot', 9),
+                     rep('His 0.5 mM.shoot', 9),
+                     rep('His 1 mM.shoot',9),
+                     rep('Tr 10 mkM.shoot', 5),
+                     rep('Tr Gln 5 mM.shoot', 4),
+                     rep('Tr His 1 mM.shoot',8))) %>% 
+  mutate(Graf.patern = factor(organ.2, levels = c('10 mkM.root', '10 mkM.shoot',
+                                                  '50 mkM.root', '50 mkM.shoot',
+                                                  '100 mkM.root', '100 mkM.shoot',
+                                                  '100 mkM His 0.5 mM.root', '100 mkM His 0.5 mM.shoot',
+                                                  '100 mkM His 1 mM.root', '100 mkM His 1 mM.shoot',
+                                                  '100 mkM Gln 1 mM.root', '100 mkM Gln 1 mM.shoot',
+                                                  '100 mkM Gln 5 mM.root', '100 mkM Gln 5 mM.shoot',
+                                                  'His 0.5 mM.root','His 0.5 mM.shoot',
+                                                  'His 1 mM.root','His 1 mM.shoot',
+                                                  'Gln 1 mM.root','Gln 1 mM.shoot',
+                                                  'Gln 5 mM.root','Gln 5 mM.shoot',
+                                                  'Pretrit Gln 1 mM.root',
+                                                  'Pretrit Gln 5 mM.root',
+                                                  'Pretrit His 0.5 mM.root',
+                                                  'Pretrit His 1 mM.root',
+                                                  'Tr 10 mkM.root','Tr 10 mkM.shoot',
+                                                  'Tr Gln 5 mM.root', 'Tr Gln 5 mM.shoot',
+                                                  'Tr His 1 mM.root','Tr His 1 mM.shoot')))
 
-Vicia_Copper_DESORBTION_SHOOT_VS_ROOT %>% 
-  filter(CW_from %in% c('Root 10 mkM', 'Shoot 10 mkM', 
-                        'Root His 0.5 mM', 'Shoot His 0.5 mM', 
-                        'Root His 1 mM', 'Shoot His 1 mM',
-                        'Root Gln 1 mM','Shoot Gln 1 mM',
-                        'Root Gln 5 mM','Shoot Gln 5 mM')) %>% 
-  ggplot(aes(x = CW_from, y = desorbtion_per_DW, fill = Variant))+
-  stat_summary(fun.data = mean_se, geom = 'errorbar', width = 0.3)+
+
+Vicia_CWROOT_VS_CWSHOOT_grafic.C <-  Vicia_CWROOT_VS_CWSHOOT %>% 
+  filter(Treatment %in% c('100 mkM', '100 mkM His 0.5 mM','100 mkM His 1 mM',
+                          '100 mkM Gln 1 mM', '100 mkM Gln 5 mM')) %>% 
+  ggplot(aes(x = Graf.patern, y = Copper_per_DW, fill = Organ))+
   stat_summary(fun.data = mean_se, geom = 'bar', show.legend = FALSE)+
-  labs(x = NULL, y = 'mkM Cu на г DW КС')
-  scale_x_discrete(labels = c('КС корня', 'КС побега',
-                              'КС корня', 'КС побега',
-                              'КС корня', 'КС побега'))+
+  stat_summary(fun.data = mean_se, geom = 'errorbar', width = 0.3)+
+  scale_x_discrete(labels = c('КС корней', 'КС побегов',
+                              'КС корней', 'КС побегов',
+                              'КС корней', 'КС побегов',
+                              'КС корней', 'КС побегов',
+                              'КС корней', 'КС побегов'))+
   scale_fill_manual(values = c('steelblue1', 'indianred1', 
                                'steelblue1', 'indianred1',
                                'steelblue1','indianred1',
+                               'steelblue1','indianred1',
                                'steelblue1','indianred1'))+
+  labs(x = NULL, y = 'mkM Cu / г DW')+
   geom_vline(xintercept = 2.5)+
   geom_vline(xintercept = 4.5)+
-  geom_richtext(data=tibble(x = 1.5, y=50), aes(x=x, y=y, label = '10 mkM CuCl2'), inherit.aes = FALSE,
-                fill = NA, label.colour = NA)+
-  geom_richtext(data=tibble(x = 3.5, y=50), aes(x=x, y=y, label = '10 mkM CuCl2<br> His 1 mM'), inherit.aes = FALSE,
-                fill = NA, label.colour = NA)+
-  geom_richtext(data=tibble(x = 5.5, y=50), aes(x=x, y=y, label = '10 mkM CuCl2<br> Gln 5 mm'), inherit.aes = FALSE,
-                fill = NA, label.colour = NA)+
-  geom_text(data = tibble(x= 1, y = 38), aes(x = x, y=y, label='a'),inherit.aes = FALSE, size = 4)+
-  geom_text(data = tibble(x= 2, y = 32), aes(x = x, y=y, label='b'),inherit.aes = FALSE, size = 4)+
-  geom_text(data = tibble(x= 3, y = 38), aes(x = x, y=y, label='a'),inherit.aes = FALSE, size = 4)+
-  geom_text(data = tibble(x= 4, y = 30), aes(x = x, y=y, label='a'),inherit.aes = FALSE, size = 4)+
-  geom_text(data = tibble(x= 5, y = 43), aes(x = x, y=y, label='a'),inherit.aes = FALSE, size = 4)+
-  geom_text(data = tibble(x= 6, y = 32), aes(x = x, y=y, label='b'),inherit.aes = FALSE, size = 4)+
-  theme_classic()+
-  plot_annotation(title = 'Рисунок 11', subtitle = 'Сравнения КС корней с КС побегов')
+  geom_vline(xintercept = 6.5)+
+  geom_vline(xintercept = 8.5)+
+  geom_richtext(data=tibble(x = 1.5, y = 135), aes(x=x, y=y, label = '100 mkM'), inherit.aes = FALSE, fill = NA, label.colour = NA, size = 5)+
+  geom_richtext(data=tibble(x = 3.5, y = 135), aes(x=x, y=y, label = '100 mkM<br> His 0.5 mM'), inherit.aes = FALSE, fill = NA, label.colour = NA, size = 5)+
+  geom_richtext(data=tibble(x = 5.5, y = 135), aes(x=x, y=y, label = '100 mkM<br> His 1 mM'), inherit.aes = FALSE, fill = NA, label.colour = NA, size = 5)+
+  geom_richtext(data=tibble(x = 7.5, y = 135), aes(x=x, y=y, label = '100 mkM<br> Gln 1 mM'), inherit.aes = FALSE, fill = NA, label.colour = NA, size = 5)+
+  geom_richtext(data=tibble(x = 9.5, y = 135), aes(x=x, y=y, label = '100 mkM<br> Gln 5 mM'), inherit.aes = FALSE, fill = NA, label.colour = NA, size = 5)+
+  geom_text(data = tibble(x = 1, y = 128), aes (x=x,y=y, label = 'a'), inherit.aes = FALSE)+
+  geom_text(data=tibble(x = 2, y = 58), aes(x=x,y=y,label = 'b'),inherit.aes=FALSE)+
+  geom_text(data=tibble(x=3, y= 125), aes(x=x,y=y,label = 'a'), inherit.aes = FALSE)+
+  geom_text(data=tibble(x = 4, y = 55), aes(x=x,y=y,label = 'b'),inherit.aes=FALSE)+
+  geom_text(data=tibble(x=5, y= 100), aes(x=x,y=y,label = 'a'), inherit.aes = FALSE)+
+  geom_text(data=tibble(x = 6, y = 50), aes(x=x,y=y,label = 'b'),inherit.aes=FALSE)+
+  geom_text(data=tibble(x = 7, y = 110), aes(x=x,y=y,label = 'a'),inherit.aes=FALSE)+
+  geom_text(data=tibble(x = 8, y = 55), aes(x=x,y=y,label = 'b'),inherit.aes=FALSE)+
+  geom_text(data=tibble(x = 9, y = 110), aes(x=x,y=y,label = 'a'),inherit.aes=FALSE)+
+  geom_text(data=tibble(x = 10, y = 55), aes(x=x,y=y,label = 'b'),inherit.aes=FALSE)+
+  theme_classic()
+  plot_annotation(title = 'Рисунок 11', subtitle = 'Сравнение адсорбционных способностей клеточных стенок корней и побегов')
+ggsave('Сравнение КС корней с КС побегов без лигандов на DW органа.png', width = 8, height = 7) 
   
-ggsave('Сравнение КС корней с КС побегов.png', width = 8, height = 6)
+Vicia_CWROOT_VS_CWSHOOT_grafic.A 
+Vicia_CWROOT_VS_CWSHOOT_grafic.B 
+Vicia_CWROOT_VS_CWSHOOT_grafic.C
+Vicia_CWROOT_VS_CWSHOOT_grafic.C +
+  plot_annotation(title = 'Рисунок 13', subtitle = 'Сравнение адсорбционных способностей КС при 100 мкМ меди')
+  
+ggsave('Сравнение КС корней с КС побегов на DW органа при 100 мкМ.png', width = 8, height = 8) 

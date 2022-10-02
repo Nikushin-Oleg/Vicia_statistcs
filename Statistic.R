@@ -127,3 +127,6 @@ Vicia_Copper_DESORBTION_root.T.test <- Vicia_Copper_DESORBTION_root %>%
   filter(Variant %in% c('10 mkM', 'Gln 1 mM'))
 t.test(desorbtion_per_DWCW_root ~ Variant, Vicia_Copper_DESORBTION_root.T.test, var.equal = TRUE)
 
+Vicia_Cell_wall_mass.share %>% 
+  arrange(Variant) %>% 
+  write_csv2(, file = 'Массовая_доля_КС_08_09_2022.csv')
