@@ -9,143 +9,71 @@ library(psych)
 library(skimr)
 install.packages("apa")
 library(apa)
-#Сбор таблички со статистиками.
-Vicia_Copper_DESORBTION_shoot %>% 
-  type_convert() %>% 
-  group_by(Variant) %>% 
-  summarise(mean(desorbtion_per_FW_shoot, na.rm = TRUE),
-            sd(desorbtion_per_FW_shoot, na.rm = TRUE),
-            std.error(desorbtion_per_FW_shoot, na.rm = TRUE),
-            mean(desorbtion_per_DW_shoot, na.rm = TRUE),
-            sd(desorbtion_per_DW_shoot, na.rm = TRUE),
-            std.error(desorbtion_per_DW_shoot, na.rm = TRUE),
-            mean(desorbtion_per_DWCW_shoot, na.rm = TRUE),
-            sd(desorbtion_per_DWCW_shoot, na.rm = TRUE),
-            std.error(desorbtion_per_DWCW_shoot, na.rm = TRUE),
-            length(desorbtion_per_FW_shoot),
-            length(desorbtion_per_DW_shoot),
-            length(desorbtion_per_DWCW_shoot)) %>% 
- # select(1,8:13) %>% 
-  filter (Variant %in% c('Gln 5 mM', 'Gln 1 mM', '100 mkM Gln 1 mM',
-                         '100 mkM Gln 5 mM', 'Tr Gln 5 mM')) %>% 
-  View()
-statistic_mass <- function(x){
-  x %>% 
-    group_by(Variant) %>% 
-    summarise(mean(CW.share.root, na.rm = TRUE), sd(CW.share.root, na.rm = TRUE),std.error(CW.share.root, na.rm = TRUE),
-              mean(CW.share.shoot, na.rm = TRUE), sd(CW.share.shoot, na.rm = TRUE),std.error(CW.share.shoot, na.rm = TRUE),
-              mean(FW.shoot, na.rm = TRUE), sd(FW.shoot, na.rm = TRUE),std.error(FW.shoot, na.rm = TRUE),
-              mean(DW.shoot, na.rm = TRUE), sd(DW.shoot, na.rm = TRUE),std.error(DW.shoot, na.rm = TRUE),
-              mean(hydration.root, na.rm = TRUE), sd(hydration.root, na.rm = TRUE),std.error(hydration.root, na.rm = TRUE),
-              mean(hydration.shoot, na.rm = TRUE), sd(hydration.shoot, na.rm = TRUE),std.error(hydration.shoot, na.rm = TRUE),
-              length(CW.share.root), length(CW.share.shoot), length(hydration.root),
-              length(hydration.shoot))
-}
-statistic_mass()
+#Vicia_Cell_wall_mass.share
+#Vicia_Copper_DESORBTION_root
+#Vicia_Copper_DESORBTION_shoot
+#Vicia_mass
+#Vicia_Copper_ENDOGEN_CONT_root
+#Vicia_Copper_ENDOGEN_CONT_shoot
+#Vicia_pH.root
+#Vicia_pH.shoot
+#Vicia_pH.Intact_Plants
 
-Vicia_Cell_wall_mass.share %>% 
-  group_by(treatment) %>% 
-  summarise(mean(CW.share.root, na.rm = TRUE), sd(CW.share.root, na.rm = TRUE),std.error(CW.share.root, na.rm = TRUE),
-            mean(CW.share.shoot, na.rm = TRUE), sd(CW.share.shoot, na.rm = TRUE),std.error(CW.share.shoot, na.rm = TRUE))
-#t.testы
-  Vicia_Cell_wall_mass.share.T.test <- Vicia_Cell_wall_mass.share %>% 
-      filter(Variant %in% c('Control', 'Gln 5 mM')) 
-    t.test(`CW.share.shoot`~`Variant`, data = Vicia_Cell_wall_mass.share.T.test)
-    
-    
-Vicia_comparison_CW_VS_Intact_Plants.t.test <-  Vicia_comparison_CW_VS_Intact_Plants %>% 
-      filter(Variant %in% c('Gln 5 mM'))
-t.test(`mkM_Cu_per_DW` ~ `treatment.2`,Vicia_comparison_CW_VS_Intact_Plants.t.test)
+Vicia_Copper_DESORBTION_root.statistica <- Vicia_Copper_DESORBTION_root %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(DESORB_FW_ROOT, na.rm = TRUE), sd(DESORB_FW_ROOT, na.rm = TRUE), std.error(DESORB_FW_ROOT, na.rm = TRUE),
+          mean(`DESORB_DW_ROOT`, na.rm = TRUE), sd(`DESORB_DW_ROOT`, na.rm = TRUE), std.error(`DESORB_DW_ROOT`, na.rm = TRUE),
+          mean(`DESORB_DWCW_ROOT`, na.rm = TRUE), sd(DESORB_DWCW_ROOT, na.rm = TRUE), std.error(`DESORB_DWCW_ROOT`, na.rm = TRUE),
+          length(`DESORB_FW_ROOT`),length(`DESORB_DW_ROOT`), length(`DESORB_DWCW_ROOT`))
+Vicia_Copper_DESORBTION_shoot.statistica<- Vicia_Copper_DESORBTION_shoot %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(DESORB_FW_SHOOT, na.rm = TRUE), sd(DESORB_FW_SHOOT, na.rm = TRUE), std.error(DESORB_FW_SHOOT, na.rm = TRUE),
+            mean(`DESORB_DW_SHOOT`, na.rm = TRUE), sd(`DESORB_DW_SHOOT`, na.rm = TRUE), std.error(`DESORB_DW_SHOOT`, na.rm = TRUE),
+            mean(`DESORB_DWCW_SHOOT`, na.rm = TRUE), sd(DESORB_DWCW_SHOOT, na.rm = TRUE), std.error(`DESORB_DWCW_SHOOT`, na.rm = TRUE),
+            length(`DESORB_FW_SHOOT`),length(`DESORB_DW_SHOOT`), length(`DESORB_DWCW_SHOOT`))
+Vicia_mass.statistica <- Vicia_mass %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(FW.ROOT, na.rm = TRUE), sd(FW.ROOT, na.rm = TRUE), std.error(FW.ROOT, na.rm = TRUE),
+            mean(FW.SHOOT, na.rm = TRUE), sd(FW.SHOOT, na.rm = TRUE), std.error(FW.SHOOT, na.rm = TRUE),
+            mean(DW.ROOT, na.rm = TRUE), sd(DW.ROOT, na.rm = TRUE), std.error(DW.ROOT, na.rm = TRUE),
+            mean(DW.SHOOT, na.rm = TRUE), sd(DW.SHOOT, na.rm = TRUE), std.error(DW.SHOOT, na.rm = TRUE),
+            mean(HYDRATION.ROOT, na.rm = TRUE), sd(HYDRATION.ROOT, na.rm = TRUE), std.error(HYDRATION.ROOT, na.rm = TRUE),
+            mean(HYDRATION.SHOOT, na.rm = TRUE), sd(HYDRATION.SHOOT, na.rm = TRUE), std.error(HYDRATION.SHOOT, na.rm = TRUE))
+Vicia_Copper_ENDOGEN_CONT_root.statistica <- Vicia_Copper_ENDOGEN_CONT_root %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(OZOL_FW_ROOT, na.rm = TRUE), sd(OZOL_FW_ROOT, na.rm = TRUE), std.error(OZOL_FW_ROOT, na.rm = TRUE),
+            mean(OZOL_DW_ROOT, na.rm = TRUE), sd(OZOL_DW_ROOT, na.rm = TRUE), std.error(OZOL_DW_ROOT, na.rm = TRUE))
 
-Vicia_comparison_CW_VS_Intact_Plants %>% 
-  group_by(treatment.2) %>% 
-  summarise(mean(mkM_Cu_per_DW)) %>% 
-  View()
-Vicia_comparison_Oz_VS_IP %>% 
-  group_by(Method.1) %>% 
-  summarise(mean(mkM_Cu_per_DW)) %>% 
-  View()
+Vicia_Copper_ENDOGEN_CONT_shoot.statistica <- Vicia_Copper_ENDOGEN_CONT_shoot %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(OZOL_FW_SHOOT, na.rm = TRUE), sd(OZOL_FW_SHOOT, na.rm = TRUE), std.error(OZOL_FW_SHOOT, na.rm = TRUE),
+            mean(OZOL_DW_SHOOT, na.rm = TRUE), sd(OZOL_DW_SHOOT, na.rm = TRUE), std.error(OZOL_DW_SHOOT, na.rm = TRUE))
+
+Vicia_pH.root.statistica <- Vicia_pH.root %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(pH_Sorbtion_ROOT, na.rm = TRUE), sd(pH_Sorbtion_ROOT, na.rm = TRUE), std.error(pH_Sorbtion_ROOT, na.rm = TRUE))
+
+Vicia_pH.shoot.statistica <- Vicia_pH.shoot %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(pH_Sorbtion_SHOOT, na.rm = TRUE), sd(pH_Sorbtion_SHOOT, na.rm = TRUE), std.error(pH_Sorbtion_SHOOT, na.rm = TRUE))
+
+Vicia_pH.Intact_Plants.statistica <- Vicia_pH.Intact_Plants %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(pH_Sorbtion_PLANTS, na.rm = TRUE), sd(pH_Sorbtion_PLANTS, na.rm = TRUE), std.error(pH_Sorbtion_PLANTS, na.rm = TRUE))
 
 
-Vicia_Copper_DESORBTION_SHOOT_VS_ROOT.t.test <-  Vicia_Copper_DESORBTION_SHOOT_VS_ROOT %>% 
-  filter(treatment.3 %in% c('His 1 mM'))
-t.test(`mkM_Cu_per_DWCW` ~ `part`,Vicia_Copper_DESORBTION_SHOOT_VS_ROOT.t.test)
-
-Vicia_Copper_DESORBTION_SHOOT_VS_ROOT %>% 
-  group_by(treatment.2) %>% 
-  summarise(mean(mkM_Cu_per_DWCW, na.rm = TRUE), mean(mkM_Cu_per_DW,mean(mkM_Cu_per_FW))) %>% 
+Vicia_Cell_wall_mass.share.T.test<- Vicia_Cell_wall_mass.share %>% 
+  filter(Treatment %in% c('10 mkM', 'Control'))
+  
+VM <- read_csv2('Масса_растений_08_09_2022.csv')
+Vicia_mass %>% 
+  arrange(Treatment) %>% 
+  filter(Treatment %in% c('Gln 1 mM', 'Control')) %>% 
   View()
 
-Vicia_pH.root.t.test <- Vicia_pH.root %>% 
-  filter(Variant %in% c('Control', '100 mkM His 1 mM'))
-t.test(pH_after_sorbtion.root ~ Variant, Vicia_pH.root.t.test, paired = FALSE)
+Vicia_mass.T.Test<- Vicia_mass %>% 
+  filter(Treatment %in% c('Control', '100 mkM His 1 mM'))
 
-Vicia_pH.shoot.t.test <- Vicia_pH.shoot %>% 
-  filter(Variant %in% c('Control', 'Gln 1 mM'))
-t.test(pH_after_sorbtion.shoot ~ Variant, Vicia_pH.shoot.t.test, paired = FALSE)
+T.test<- t_test(DW.ROOT ~ Treatment, data = Vicia_mass.T.Test)
+apa(T.test, format = 'docx')
 
-Vicia_Copper_DESORBTION_root
-
-Vicia_Copper_DESORBTION_root.1 <- Vicia_Copper_DESORBTION_root %>% 
-  arrange(Variant) %>% 
-  slice(-c(87:98)) %>% 
-  select(1:4) %>% 
-  mutate(CW_from = c(rep('Root 10 mkM',21),
-                     rep('Root 100 mkM',11),
-                     rep('Root 100 mkM Gln 1 mM', 3),
-                     rep('Root 100 mkM Gln 5 mM', 3),
-                     rep('Root 100 mkM His 0.5 mM', 3),
-                     rep('Root 100 mkM His 1 mM', 3),
-                     rep('Root 50 mkM', 6),
-                     rep('Root Gln 1 mM', 12),
-                     rep('Root Gln 5 mM', 12),
-                     rep('Root His 0.5 mM', 6),
-                     rep('Root His 1 mM', 6),
-                     rep('Root Tr 10 mkM', 9),
-                     rep('Root Tr Gln 5 mM', 9),
-                     rep('Root Tr His 1 mM', 9)))
-
-colnames(Vicia_Copper_DESORBTION_shoot.1) <- c('Variant', 'desorbtion_per_FW',
-                                              'desorbtion_per_DW', 'desorbtion_per_DWCW', 'CW_from')
-
-Vicia_Copper_DESORBTION_SHOOT_VS_ROOT <- bind_rows(Vicia_Copper_DESORBTION_shoot.1, Vicia_Copper_DESORBTION_root.1)
-Vicia_Copper_DESORBTION_SHOOT_VS_ROOT<- Vicia_Copper_DESORBTION_SHOOT_VS_ROOT %>% 
-  mutate(treatment_order = factor(Variant, levels = c('10 mkM', 'His 0.5 mM', 'His 1 mM', 'Gln 1 mM', 'Gln 5 mM',
-                                                       '100 mkM', '100 mkM His 0.5 mM', '100 mkM His 1 mM', '100 mkM Gln 1 mM', '100 mkM Gln 5 mM',
-                                                       '50 mkM', 'Tr 10 mkM', 'Tr His 1 mM', 'Tr Gln 5 mM')))
-Vicia_Copper_DESORBTION_root %>% 
-  arrange(Variant) %>% 
-  filter(Variant %in% c('10 mkM', 'Gln 1 mM', 'Gln 5 mM')) %>% 
-  na.omit() %>% 
-  group_by(Variant) %>% 
-  summarise(mean(desorbtion_per_FW_root), sd(desorbtion_per_FW_root), std.error(desorbtion_per_FW_root),
-            mean(desorbtion_per_DW_root), sd(desorbtion_per_DW_root), std.error(desorbtion_per_DW_root),
-            mean(desorbtion_per_DWCW_root), sd(desorbtion_per_DWCW_root), std.error(desorbtion_per_DWCW_root)) %>% 
-  View()
-
-Vicia_Copper_DESORBTION_root.T.test <- Vicia_Copper_DESORBTION_root %>% 
-  filter(Variant %in% c('10 mkM', 'Gln 1 mM'))
-t.test(desorbtion_per_DWCW_root ~ Variant, Vicia_Copper_DESORBTION_root.T.test, var.equal = TRUE)
-
-Vicia_Cell_wall_mass.share %>% 
-  arrange(Variant) %>% 
-  write_csv2(, file = 'Массовая_доля_КС_08_09_2022.csv')
-
-Vicia_Copper_DESORBTION_root <- Vicia_Copper_DESORBTION_root %>% 
-  arrange(Variant) %>% 
-  select(1:4)
-
-Vicia_Copper_DESORBTION_shoot <- Vicia_Copper_DESORBTION_shoot %>% 
-  arrange(Variant) %>% 
-  select(1:4)
-colnames(Vicia_Copper_DESORBTION_root) <- c('Treatment', 'Copper_per_FW',
-                                             'Copper_per_DW','Copper_per_DWCW')
-Vicia_Copper_DESORBTION_shoot <- Vicia_Copper_DESORBTION_shoot %>% 
-  slice(-c(19:21, 43:45, 61:63, 73:75, 94:99))
-Vicia_CWROOT_VS_CWSHOOT <- bind_rows(Vicia_Copper_DESORBTION_root,
-                                     Vicia_Copper_DESORBTION_shoot)
-rm(Vicia_Copper_DESORBTION_shoot.1)
-
-Vicia_CWROOT_VS_CWSHOOT$Graf.patern[33:35] <- rep('100 mkM His 0.5 mM.root',3)
-Vicia_CWROOT_VS_CWSHOOT %>%   
-View()
