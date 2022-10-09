@@ -72,8 +72,11 @@ Vicia_mass %>%
   View()
 
 Vicia_mass.T.Test<- Vicia_mass %>% 
-  filter(Treatment %in% c('Control', '100 mkM His 1 mM'))
+  filter(Treatment %in% c('Control', '100 mkM His 0.5 mM'))
 
-T.test<- t_test(DW.ROOT ~ Treatment, data = Vicia_mass.T.Test)
-apa(T.test, format = 'docx')
+t_test(DW.SHOOT ~ Treatment, data = Vicia_mass.T.Test) %>% 
+apa( format = 'docx')
 
+0.1523333*100
+15.23333/0.2026708
+100 - 75.16292 
