@@ -80,3 +80,6 @@ apa( format = 'docx')
 0.1523333*100
 15.23333/0.2026708
 100 - 75.16292 
+Vicia_Copper_ENDOGEN_CONT_shoot.t.test <- Vicia_Copper_ENDOGEN_CONT_shoot %>% 
+  filter(Treatment %in% c('10 mkM', 'His 1  mM'))
+t_test(OZOL_DW_SHOOT ~ Treatment, data = Vicia_Copper_ENDOGEN_CONT_shoot.t.test)
