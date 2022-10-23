@@ -7,7 +7,6 @@ library(pwr)
 library(plotrix)
 library(psych)
 library(skimr)
-install.packages("apa")
 library(apa)
 #Vicia_Cell_wall_mass.share
 #Vicia_Copper_DESORBTION_root
@@ -72,14 +71,15 @@ Vicia_mass %>%
   View()
 
 Vicia_mass.T.Test<- Vicia_mass %>% 
-  filter(Treatment %in% c('Control', '100 mkM His 0.5 mM'))
+  filter(Treatment %in% c('Control', 'His 0.5 mM'))
 
-t_test(DW.SHOOT ~ Treatment, data = Vicia_mass.T.Test) %>% 
+t_test(DW.SHOOT ~ Treatment, data = Vicia_mass.T.Test) 
 apa( format = 'docx')
 
 0.1523333*100
 15.23333/0.2026708
 100 - 75.16292 
-Vicia_Copper_ENDOGEN_CONT_shoot.t.test <- Vicia_Copper_ENDOGEN_CONT_shoot %>% 
-  filter(Treatment %in% c('10 mkM', 'His 1  mM'))
-t_test(OZOL_DW_SHOOT ~ Treatment, data = Vicia_Copper_ENDOGEN_CONT_shoot.t.test)
+Vicia_Copper_ENDOGEN_CONT_root.t.test <- Vicia_Copper_ENDOGEN_CONT_root %>% 
+  filter(Treatment %in% c('10 mkM', 'His 1 mM'))
+t_test(OZOL_DW_ROOT ~ Treatment, data = Vicia_Copper_ENDOGEN_CONT_root.t.test) %>% 
+  apa(format = 'docx')
