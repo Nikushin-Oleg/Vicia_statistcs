@@ -76,10 +76,8 @@ Vicia_mass.T.Test<- Vicia_mass %>%
 t_test(DW.SHOOT ~ Treatment, data = Vicia_mass.T.Test) 
 apa( format = 'docx')
 
-0.1523333*100
-15.23333/0.2026708
-100 - 75.16292 
-Vicia_Copper_ENDOGEN_CONT_root.t.test <- Vicia_Copper_ENDOGEN_CONT_root %>% 
-  filter(Treatment %in% c('10 mkM', 'His 1 mM'))
-t_test(OZOL_DW_ROOT ~ Treatment, data = Vicia_Copper_ENDOGEN_CONT_root.t.test) %>% 
+
+Vicia_Copper_DESORBTION_root.t.test <- Vicia_Copper_DESORBTION_root %>% 
+  filter(Treatment %in% c('100 mkM', '100 mkM His 0.5 mM'))
+t_test(DESORB_DW_ROOT~ Treatment, data = Vicia_Copper_DESORBTION_root.t.test) %>% 
   apa(format = 'docx')
