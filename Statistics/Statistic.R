@@ -78,6 +78,7 @@ apa( format = 'docx')
 
 
 Vicia_Copper_DESORBTION_root.t.test <- Vicia_Copper_DESORBTION_root %>% 
-  filter(Treatment %in% c('100 mkM', '100 mkM His 0.5 mM'))
-t_test(DESORB_DW_ROOT~ Treatment, data = Vicia_Copper_DESORBTION_root.t.test) %>% 
+  filter(Treatment %in% c('100 mkM His 1 mM', '100 mkM Gln 1 mM'))
+t_test(DESORB_DW_ROOT~ Treatment, data = Vicia_Copper_DESORBTION_root.t.test)
   apa(format = 'docx')
+
