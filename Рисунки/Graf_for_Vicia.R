@@ -1,4 +1,3 @@
-
 library(ggplot2)
 library(tidyverse)
 library(ggtext)
@@ -296,4 +295,187 @@ Vicia_Des_VS_Min.100_mkM.graf <- Vicia_Des_VS_Min.100_mkM %>%
   plot_annotation(title='Рисунок 10', subtitle = 'Сравнение данных десорбции КС и озоления корней', tag_levels = 'A')
 ggsave('Desorb_VS_Mineralisation.png', height = 10, width=9)
 
+Vicia_Copper_DESORBTION_root_VS_shoot <- Vicia_Copper_DESORBTION_root %>% 
+  filter(Treatment%in% c('10 mkM', '100 mkM', '100 mkM Gln 1 mM',
+                         '100 mkM Gln 5 mM', '100 mkM His 0.5 mM', '100 mkM His 1 mM', '50 mkM', 
+                         'Gln 1 mM', 'Gln 5 mM', 'His 0.5 mM', 'His 1 mM')) %>% 
+  mutate(part = factor(Treatment, labels = c('10 mkM.root', '100 mkM.root', '100 mkM Gln 1 mM.root',
+                       '100 mkM Gln 5 mM.root', '100 mkM His 0.5 mM.root', '100 mkM His 1 mM.root', '50 mkM.root', 
+                       'Gln 1 mM.root', 'Gln 5 mM.root', 'His 0.5 mM.root', 'His 1 mM.root'))) %>% 
+  select(1:4,6)
 
+Vicia_Copper_DESORBTION_root_VS_shoot.2 <- Vicia_Copper_DESORBTION_shoot %>% 
+  filter(Treatment%in% c('10 mkM', '100 mkM', '100 mkM Gln 1 mM',
+                         '100 mkM Gln 5 mM', '100 mkM His 0.5 mM', '100 mkM His 1 mM', '50 mkM', 
+                         'Gln 1 mM', 'Gln 5 mM', 'His 0.5 mM', 'His 1 mM')) %>% 
+  mutate(part = factor(Treatment, labels = c('10 mkM.shoot', '100 mkM.shoot', '100 mkM Gln 1 mM.shoot',
+                                             '100 mkM Gln 5 mM.shoot', '100 mkM His 0.5 mM.shoot', '100 mkM His 1 mM.shoot', '50 mkM.shoot', 
+                                             'Gln 1 mM.shoot', 'Gln 5 mM.shoot', 'His 0.5 mM.shoot', 'His 1 mM.shoot'))) %>% 
+  select(1:4,6)
+colnames(Vicia_Copper_DESORBTION_root_VS_shoot.2) <- c('Treatment', 'mkM_Cu_per_FW', 'mkM_Cu_per_DW','mkM_Cu_per_DWCW', 'part')
+Vicia_Copper_DESORBTION_root_VS_shoot <- bind_rows(Vicia_Copper_DESORBTION_root_VS_shoot,Vicia_Copper_DESORBTION_root_VS_shoot.2)
+
+Vicia_Copper_DESORBTION_root_VS_shoot.1 <- Vicia_Copper_DESORBTION_root_VS_shoot %>% 
+  mutate(graphic.order = factor(part, levels = c('10 mkM.root','10 mkM.shoot',
+                                                 '50 mkM.root', '50 mkM.shoot',
+                                                 '100 mkM.root', '100 mkM.shoot',
+                                                 '100 mkM Gln 1 mM.root','100 mkM Gln 1 mM.shoot',
+                                                 '100 mkM Gln 5 mM.root', '100 mkM Gln 5 mM.shoot',
+                                                 '100 mkM His 0.5 mM.root', '100 mkM His 0.5 mM.shoot',
+                                                 '100 mkM His 1 mM.root','100 mkM His 1 mM.shoot',
+                                                 'Gln 1 mM.root', 'Gln 1 mM.shoot',
+                                                 'Gln 5 mM.root','Gln 5 mM.shoot',
+                                                 'His 0.5 mM.root','His 0.5 mM.shoot',
+                                                 'His 1 mM.root', 'His 1 mM.shoot'))) %>% 
+  filter(Treatment%in% c('10 mkM', '50 mkM', '100 mkM')) %>% 
+  ggplot(aes(x=graphic.order, y=mkM_Cu_per_DWCW, fill=graphic.order))+
+  stat_summary(fun.data=mean_se, geom='bar', show.legend = FALSE)+
+  stat_summary(fun.data=mean_se, geom='errorbar', width=0.3)+
+  labs(x=NULL, y='mkM Cu / г сухой массы КС')+
+  scale_fill_manual(values = c('#078FF1','#F1071A',
+                               '#078FF1','#F1071A',
+                               '#078FF1','#F1071A'))+
+  geom_text(data=tibble(x=1,y=50), aes(x=x,y=y,label='a'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=2,y=25), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=3,y=175), aes(x=x,y=y,label='c'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=4,y=75), aes(x=x,y=y,label='d'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=5,y=260), aes(x=x,y=y,label='e'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=6,y=125), aes(x=x,y=y,label='f'), inherit.aes = FALSE, size=5)+
+  geom_richtext(data=tibble(x=1.5,y=280), aes(x=x,y=y,label='10 mkM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=3.5,y=280), aes(x=x,y=y,label='50 mkM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=5.5,y=280), aes(x=x,y=y,label='100 mkM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  scale_x_discrete(labels = c('КС корней', 'КС побег',
+                              'КС корней', 'КС побег',
+                              'КС корней', 'КС побег'))+
+  theme_classic()+
+  theme_bw()
+
+
+Vicia_Copper_DESORBTION_root_VS_shoot.2<- Vicia_Copper_DESORBTION_root_VS_shoot %>% 
+  mutate(graphic.order = factor(part, levels = c('10 mkM.root','10 mkM.shoot',
+                                                 '50 mkM.root', '50 mkM.shoot',
+                                                 '100 mkM.root', '100 mkM.shoot',
+                                                 '100 mkM His 0.5 mM.root', '100 mkM His 0.5 mM.shoot',
+                                                 '100 mkM His 1 mM.root','100 mkM His 1 mM.shoot',
+                                                 '100 mkM Gln 1 mM.root','100 mkM Gln 1 mM.shoot',
+                                                 '100 mkM Gln 5 mM.root', '100 mkM Gln 5 mM.shoot',
+                                                 'His 0.5 mM.root','His 0.5 mM.shoot',
+                                                 'His 1 mM.root', 'His 1 mM.shoot',
+                                                 'Gln 1 mM.root', 'Gln 1 mM.shoot',
+                                                 'Gln 5 mM.root','Gln 5 mM.shoot'))) %>% 
+  filter(Treatment%in% c('10 mkM', 'His 0.5 mM', 'His 1 mM', 'Gln 1 mM', 'Gln 5 mM')) %>% 
+  ggplot(aes(x=graphic.order, y=mkM_Cu_per_DWCW, fill=graphic.order))+
+  stat_summary(fun.data=mean_se, geom='bar', show.legend = FALSE)+
+  stat_summary(fun.data=mean_se, geom='errorbar', width=0.3)+
+  labs(x=NULL, y='mkM Cu / г сухой массы КС')+
+  scale_fill_manual(values = c('#078FF1','#F1071A',
+                               '#078FF1','#F1071A',
+                               '#078FF1','#F1071A',
+                               '#078FF1','#F1071A',
+                               '#078FF1','#F1071A'))+
+  geom_text(data=tibble(x=1,y=40), aes(x=x,y=y,label='a'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=2,y=17), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=3,y=40), aes(x=x,y=y,label='a'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=4,y=17), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=5,y=40), aes(x=x,y=y,label='a'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=6,y=17), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=7,y=45), aes(x=x,y=y,label='c'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=8,y=18), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=9,y=42.5), aes(x=x,y=y,label='c'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=10,y=20), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_richtext(data=tibble(x=1.5,y=47), aes(x=x,y=y,label='10 mkM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=3.5,y=47), aes(x=x,y=y,label='10 mkM<br> +His 0.5 mM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=5.5,y=47), aes(x=x,y=y,label='10 mkM<br> +His 1 mM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=7.5,y=47), aes(x=x,y=y,label='10 mkM<br> +Gln 1 mM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=9.5,y=47), aes(x=x,y=y,label='10 mkM<br> +Gln 5 mM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  scale_x_discrete(labels = c('КС корней', 'КС побег',
+                              'КС корней', 'КС побег',
+                              'КС корней', 'КС побег',
+                              'КС корней', 'КС побег',
+                              'КС корней', 'КС побег'))+
+  geom_vline(xintercept = 2.5)+
+  geom_vline(xintercept = 4.5)+
+  geom_vline(xintercept = 6.5)+
+  geom_vline(xintercept = 8.5)+
+  theme_classic()+
+  theme_bw()
+
+Vicia_Copper_DESORBTION_root_VS_shoot.1
+Vicia_Copper_DESORBTION_root_VS_shoot.2
+
+Vicia_Copper_DESORBTION_root_VS_shoot.3<- Vicia_Copper_DESORBTION_root_VS_shoot %>% 
+  mutate(graphic.order = factor(part, levels = c('10 mkM.root','10 mkM.shoot',
+                                                 '50 mkM.root', '50 mkM.shoot',
+                                                 '100 mkM.root', '100 mkM.shoot',
+                                                 '100 mkM His 0.5 mM.root', '100 mkM His 0.5 mM.shoot',
+                                                 '100 mkM His 1 mM.root','100 mkM His 1 mM.shoot',
+                                                 '100 mkM Gln 1 mM.root','100 mkM Gln 1 mM.shoot',
+                                                 '100 mkM Gln 5 mM.root', '100 mkM Gln 5 mM.shoot',
+                                                 'His 0.5 mM.root','His 0.5 mM.shoot',
+                                                 'His 1 mM.root', 'His 1 mM.shoot',
+                                                 'Gln 1 mM.root', 'Gln 1 mM.shoot',
+                                                 'Gln 5 mM.root','Gln 5 mM.shoot'))) %>% 
+  filter(Treatment%in% c('100 mkM', '100 mkM His 0.5 mM', '100 mkM His 1 mM', '100 mkM Gln 1 mM', '100 mkM Gln 5 mM')) %>% 
+  ggplot(aes(x=graphic.order, y=mkM_Cu_per_DWCW, fill=graphic.order))+
+  stat_summary(fun.data=mean_se, geom='bar', show.legend = FALSE)+
+  stat_summary(fun.data=mean_se, geom='errorbar', width=0.3)+
+  labs(x=NULL, y='mkM Cu / г сухой массы КС')+
+  scale_fill_manual(values = c('#078FF1','#F1071A',
+                               '#078FF1','#F1071A',
+                               '#078FF1','#F1071A',
+                               '#078FF1','#F1071A',
+                               '#078FF1','#F1071A'))+
+  geom_text(data=tibble(x=1,y=260), aes(x=x,y=y,label='a'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=2,y=125), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=3,y=260), aes(x=x,y=y,label='a'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=4,y=135), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=5,y=225), aes(x=x,y=y,label='c'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=6,y=125), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=7,y=225), aes(x=x,y=y,label='c'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=8,y=125), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=9,y=225), aes(x=x,y=y,label='c'), inherit.aes = FALSE, size=5)+
+  geom_text(data=tibble(x=10,y=125), aes(x=x,y=y,label='b'), inherit.aes = FALSE, size=5)+
+  geom_richtext(data=tibble(x=1.5,y=270), aes(x=x,y=y,label='100 mkM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=3.5,y=270), aes(x=x,y=y,label='100 mkM<br> +His 0.5 mM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=5.5,y=270), aes(x=x,y=y,label='100 mkM<br> +His 1 mM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=7.5,y=270), aes(x=x,y=y,label='100 mkM<br> +Gln 1 mM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  geom_richtext(data=tibble(x=9.5,y=270), aes(x=x,y=y,label='100 mkM<br> +Gln 5 mM'), 
+                inherit.aes = FALSE, label.colour=NA,fill=NA,size=5)+
+  scale_x_discrete(labels = c('КС корней', 'КС побег',
+                              'КС корней', 'КС побег',
+                              'КС корней', 'КС побег',
+                              'КС корней', 'КС побег',
+                              'КС корней', 'КС побег'))+
+  geom_vline(xintercept = 2.5)+
+  geom_vline(xintercept = 4.5)+
+  geom_vline(xintercept = 6.5)+
+  geom_vline(xintercept = 8.5)+
+  theme_classic()+
+  theme_bw()
+
+(Vicia_Copper_DESORBTION_root_VS_shoot.1/
+Vicia_Copper_DESORBTION_root_VS_shoot.2/
+Vicia_Copper_DESORBTION_root_VS_shoot.3)
+Vicia_Copper_DESORBTION_root_VS_shoot.1+
+  plot_annotation(title = 'Рисунок 11', subtitle = 'Сравнение адсобционных способностей клеточных стенок корней и побегов в отсутвии лигандов')
+ggsave('Adsorbtion_CW.ROOT_CW.SHOOT_ligand_free.png', height = 8, width = 8)
+
+Vicia_Copper_DESORBTION_root_VS_shoot.2+
+  plot_annotation(title = 'Рисунок 12', subtitle = 'Сравнение адсобционных способностей клеточных стенок корней и побегов при 10 mkM меди в среде')
+ggsave('Adsorbtion_CW.ROOT_CW.SHOOT_10_mkM.png', height = 8, width = 8)
+
+Vicia_Copper_DESORBTION_root_VS_shoot.3+
+  plot_annotation(title = 'Рисунок 13', subtitle = 'Сравнение адсобционных способностей клеточных стенок корней и побегов при 100 mkM меди в среде')
+ggsave('Adsorbtion_CW.ROOT_CW.SHOOT_100_mkM.png', height = 8, width = 8)
