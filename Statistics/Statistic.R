@@ -71,7 +71,7 @@ Vicia_mass %>%
   View()
 
 Vicia_mass.T.Test<- Vicia_mass %>% 
-  filter(Treatment %in% c('Control', 'His 0.5 mM'))
+  filter(Treatment %in% c('100 mkM', 'Control'))
 
 t_test(DW.SHOOT ~ Treatment, data = Vicia_mass.T.Test) 
 apa( format = 'docx')
@@ -82,3 +82,51 @@ Vicia_Copper_DESORBTION_root.t.test <- Vicia_Copper_DESORBTION_root %>%
 t_test(DESORB_DW_ROOT~ Treatment, data = Vicia_Copper_DESORBTION_root.t.test)
   apa(format = 'docx')
 
+  
+  Vicia_Copper_DESORBTION_root.statistica <- Vicia_Copper_DESORBTION_root %>% 
+    group_by(Treatment) %>% 
+    summarise(mean(DESORB_FW_ROOT, na.rm = TRUE), sd(DESORB_FW_ROOT, na.rm = TRUE), std.error(DESORB_FW_ROOT, na.rm = TRUE),
+              mean(`DESORB_DW_ROOT`, na.rm = TRUE), sd(`DESORB_DW_ROOT`, na.rm = TRUE), std.error(`DESORB_DW_ROOT`, na.rm = TRUE),
+              mean(`DESORB_DWCW_ROOT`, na.rm = TRUE), sd(DESORB_DWCW_ROOT, na.rm = TRUE), std.error(`DESORB_DWCW_ROOT`, na.rm = TRUE),
+              length(`DESORB_FW_ROOT`),length(`DESORB_DW_ROOT`), length(`DESORB_DWCW_ROOT`))
+  
+  Vicia_Copper_DESORBTION_root.statistica
+
+Vicia_Copper_DESORBTION_root %>% 
+  select(2:4) %>% 
+    summarise(map_dbl(.,mean), map_dbl(.,sd), map_dbl(.,std.error),map_dbl(.,length))
+
+Vicia_Copper_DESORBTION_root %>%   
+  filter(Treatment %in% '10 mkM') %>% 
+  select(2:4) %>% 
+  map_dbl(.,mean)#В итоге map_dbl распространяет функцию на весь столбец, что бы считать отдельно для каждого варианта Treatment нужно танцевать с бубном.
+  
+  data(cars)
+map_dbl(cars,mean)  
+cars
+
+search()
+
+
+X <- Vicia_Copper_DESORBTION_root %>% 
+  select(1:4) %>% 
+  group_by(Treatment) %>% 
+  summarise(mean(DESORB_FW_ROOT, na.rm = TRUE),
+            mean(`DESORB_DW_ROOT`, na.rm = TRUE),
+            mean(`DESORB_DWCW_ROOT`, na.rm = TRUE)) 
+
+d <- dist(X)
+hc <- hclust(d)
+plot(hc,
+     sub='',
+     labels=FALSE)
+
+clust <- cutree(hc,k=3)
+tapply(X,clust,mean)
+names <- X$Treatment
+names
+
+
+Vicia_Copper_by_solution.T.test <- Vicia_Copper_by_solution %>% 
+  filter(Treatment %in% c('10 mkM', 'Gln 1 mM'))
+t_test(mkM_Cu_per_DW~Treatment, data =Vicia_Copper_by_solution.T.test )
