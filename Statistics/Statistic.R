@@ -130,3 +130,17 @@ names
 Vicia_Copper_by_solution.T.test <- Vicia_Copper_by_solution %>% 
   filter(Treatment %in% c('10 mkM', 'Gln 1 mM'))
 t_test(mkM_Cu_per_DW~Treatment, data =Vicia_Copper_by_solution.T.test )
+
+Vicia_Copper_by_solution %>% 
+  group_by(Variant) %>% 
+  summarise(n=n())
+
+Vicia_Copper_ENDOGEN_CONT_root %>% 
+  group_by(Treatment) %>% 
+  summarise(n=n())
+
+Vicia_Cell_wall_mass.share.T.test <- Vicia_Cell_wall_mass.share %>% 
+  filter(Treatment%in% c('100 mkM', '100 mkM Gln 5 mM'))
+t_test(CW_share_SHOOT~Treatment, data = Vicia_Cell_wall_mass.share.T.test)
+
+

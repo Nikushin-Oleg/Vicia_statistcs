@@ -64,7 +64,7 @@ Vicia_mass.DW.ROOT.100_mkM <- Vicia_mass %>%
   plot_annotation(subtitle = 'Токсическое действие ионов меди на накопление сухой массы корня', tag_level = 'A')
 ggsave('Влияние ионов меди на сухую массу корня.png', height = 9, width = 8.23)
 
-#####################################################
+
 Vicia_mass.DW.SHOOT <- Vicia_mass %>% 
   filter(Treatment %in% c('Control', '10 mkM','50 mkM', '100 mkM')) %>% 
   ggplot(aes(x = Order,y = DW.SHOOT, fill = Order))+

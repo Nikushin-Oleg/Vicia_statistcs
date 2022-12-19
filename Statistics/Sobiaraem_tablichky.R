@@ -24,3 +24,33 @@ Vicia_Cell_wall_mass.share <- bind_rows(Vicia_Cell_wall_mass.share, Vicia)
 Vicia_Copper_ENDOGEN_CONT_root <- bind_rows(Vicia_Copper_ENDOGEN_CONT_root,Vicia)
 #Vicia_pH.root$Variant[19:27] <- c(rep('Tr 10 mkM',3), rep('Tr His 1 mM', 3), rep('Tr Gln 5 mM', 3))
 
+Vicia_Cell_wall_mass.share %>% 
+  View()
+Vicia <- read_xlsx('Vicia_CW_share.xlsx')
+Vicia <- Vicia %>% 
+  select(1,10,11)
+  
+colnames(Vicia) <- c('Treatment', 'CW_share_ROOT', 'CW_share_SHOOT')
+
+Vicia_Cell_wall_mass.share <- bind_rows(Vicia_Cell_wall_mass.share,Vicia)
+ 
+Vicia_Cell_wall_mass.share <- Vicia_Cell_wall_mass.share %>% 
+  arrange(Treatment) 
+  
+  Vicia_Cell_wall_mass.share[Vicia_Cell_wall_mass.share == 0] <- NA
+  Vicia_Cell_wall_mass.share.statistica <- Vicia_Cell_wall_mass.share %>% 
+    group_by(Treatment) %>% 
+    summarise(mean(CW_share_ROOT, na.rm=TRUE), sd(CW_share_ROOT,na.rm=TRUE), std.error(CW_share_ROOT, na.rm=TRUE),
+              mean(CW_share_SHOOT, na.rm=TRUE), sd(CW_share_SHOOT,na.rm=TRUE), std.error(CW_share_SHOOT, na.rm=TRUE),
+              n=n())
+  
+  Vicia_Cell_wall_mass.share %>% 
+    select(1,3) %>% 
+    na.omit() %>% 
+    group_by(Treatment) %>% 
+    summarise(mean(CW_share_SHOOT, na.rm=TRUE), sd(CW_share_SHOOT,na.rm=TRUE), std.error(CW_share_SHOOT, na.rm=TRUE),
+              n=n()) %>% 
+    View()
+  
+  Vicia_Cell_wall_mass.share$CW_share_SHOOT[38] <- 0.5837995
+  
